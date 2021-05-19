@@ -30,4 +30,15 @@ class AuthController extends Controller
 
         return response($response, 201);
     }
+
+    // Delete all tokens in the DB associated with the user that is logging out
+    public function logout(Request $request) {
+        auth()->user()->tokens()->delete();
+
+        $response = [
+            'message' => 'Successfully Logged Out'
+        ];
+        
+        return response($response, 200);
+    }
 }
