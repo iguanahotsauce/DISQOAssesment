@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\NoteModel;
+use App\Models\Note;
 use Illuminate\Support\Facades\Validator;
 
 class NoteController extends Controller
@@ -30,8 +30,6 @@ class NoteController extends Controller
 
         // Passed validation, create the new note and return a 201
 
-        $note = new NoteModel;
-
         $request_data = [
             'email' => $request->user()->email,
             'title' => $request->title,
@@ -39,7 +37,8 @@ class NoteController extends Controller
         ];
 
         $response = [
-            'message' => $note->createNote($request_data)
+            'message' => 'New note successfully created',
+            'note' => Note::create($request_data)
         ];
         
         return response($response, 201);
@@ -52,10 +51,10 @@ class NoteController extends Controller
     public function index() {
         $user = auth('sanctum')->user();
 
-        $note = new NoteModel;
+        $note = new Note;
 
         $response = [
-            'message' => $note->getNote($user->email)
+            'notes' => $note->getNote($user->email)
         ];
 
         return response($response, 200);
@@ -71,10 +70,10 @@ class NoteController extends Controller
     {
         $user = auth('sanctum')->user();
 
-        $note = new NoteModel;
+        $note = new Note;
 
         $response = [
-            'message' => $note->getNote($user->email, $id)
+            'notes' => $note->getNote($user->email, $id)
         ];
 
         return response($response, 200);
@@ -102,7 +101,7 @@ class NoteController extends Controller
 
         // Passed validation, select the note from the database
 
-        $note = new NoteModel;
+        $note = new Note;
 
         $request_data = [
             'title' => $request->title,
@@ -110,7 +109,7 @@ class NoteController extends Controller
         ];
 
         $response = [
-            'notes' => $note->updateNote($request_data, $id, $request->user()->email)
+            'message' => $note->updateNote($request_data, $id, $request->user()->email)
         ];
         
         return response($response, 200);
@@ -126,7 +125,7 @@ class NoteController extends Controller
     {
         $user = auth('sanctum')->user();
 
-        $note = new NoteModel;
+        $note = new Note;
 
         $response = [
             'message' => $note->removeNote($id, $user->email)

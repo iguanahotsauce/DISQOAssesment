@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class NoteModel extends Model
+class Note extends Model
 {
     use HasFactory;
 
@@ -20,13 +20,6 @@ class NoteModel extends Model
         'title',
         'note',
     ];
-
-    // Create a new note for the user associated with the token sent
-    public function createNote($request) {
-        $insert = DB::table('notes')->insert($request);
-
-        return $insert ? 'New note successfully created' : 'There was an error inserting the new note';
-    }
 
     // Delete the note for the ID sent if it was created by the user associated with the token sent
     public function removeNote($id, $user) {
