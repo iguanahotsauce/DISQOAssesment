@@ -14,6 +14,7 @@ class CreateNotesTable extends Migration
     public function up()
     {
         Schema::create('notes', function (Blueprint $table) {
+            $table->id();
             $table->string('email');
             $table->string('title')->max(50);
             $table->string('note')->max(1000)->nullable();

@@ -16,9 +16,15 @@ class NoteModel extends Model
         return $insert ? 'New note successfully created' : 'There was an error inserting the new note';
     }
 
-    public function removeNote($title, $user) {
-        $delete = DB::table('notes')->where('email', '=', $user)->where('title', '=', $title)->delete();
+    public function removeNote($id, $user) {
+        $delete = DB::table('notes')->where('email', '=', $user)->where('id', '=', $id)->delete();
 
-        return $delete ? 'Note successfully deleted' : 'There was no note with that title for the associated user';
+        return $delete ? 'Note successfully deleted' : 'There was no note with that ID for the associated user';
+    }
+
+    public function updateNote($request, $id, $user) {
+        $update = DB::table('notes')->where('email', '=', $user)->where('id', '=', $id)->update($request);
+
+        return $update ? 'Note was successfully updated' : 'There was no note with that ID for the associated user';
     }
 }

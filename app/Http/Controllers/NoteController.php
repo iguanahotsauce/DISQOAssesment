@@ -66,25 +66,47 @@ class NoteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:50',
+            'note' => 'max:1000'
+        ]);
+
+        if($validator->fails()) {
+            // There were errors with the validation, don't create the new note and return a 400 with the error messages
+
+            return response()->json($validator->messages(), 400);
+        }
+
+        // Passed validation, create the new note and return a 201
+
+        $note = new NoteModel;
+
+        $request_data = [
+            'title' => $request->title,
+            'note' => $request->note
+        ];
+
+        $response = [
+            'message' => $note->updateNote($request_data, $id, $request->user()->email)
+        ];
+        
+        return response($response, 200);
     }
 
     /**
      * Delete the note with the given title for the user associated with the token sent
      *
-     * @param  string  $title 
+     * @param  int  $id 
      * @return \Illuminate\Http\Response
      */
-    public function destroy($title)
+    public function destroy($id)
     {
-        if(!isset($title)) return response(['message' => 'Title is required'], 400);
-
         $user = auth('sanctum')->user();
 
         $note = new NoteModel;
 
         $response = [
-            'message' => $note->removeNote($title, $user->email)
+            'message' => $note->removeNote($id, $user->email)
         ];
 
         return response($response, 200);
