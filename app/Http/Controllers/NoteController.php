@@ -25,7 +25,7 @@ class NoteController extends Controller
         if($validator->fails()) {
             // There were errors with the validation, don't create the new note and return a 400 with the error messages
 
-            return response()->json($validator->messages(), 400);
+            return response(['errors' => $validator->messages()], 400);
         }
 
         // Passed validation, create the new note and return a 201
@@ -97,7 +97,7 @@ class NoteController extends Controller
         if($validator->fails()) {
             // There were errors with the validation, don't create the new note and return a 400 with the error messages
 
-            return response()->json($validator->messages(), 400);
+            return response(['errors' => $validator->messages()], 400);
         }
 
         // Passed validation, select the note from the database
