@@ -44,17 +44,40 @@ class NoteController extends Controller
         
         return response($response, 201);
     }
+
+
+    /**
+     * Returns all notes associated with the logged in user
+     */
+    public function index() {
+        $user = auth('sanctum')->user();
+
+        $note = new NoteModel;
+
+        $response = [
+            'message' => $note->getNote($user->email)
+        ];
+
+        return response($response, 200);
+    }
  
     /**
      * Returns a specific note
      * 
-     * @param string $email
-     * @param string $title
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($email, $title)
+    public function show($id)
     {
-        //
+        $user = auth('sanctum')->user();
+
+        $note = new NoteModel;
+
+        $response = [
+            'message' => $note->getNote($user->email, $id)
+        ];
+
+        return response($response, 200);
     }
 
     /**
@@ -77,7 +100,7 @@ class NoteController extends Controller
             return response()->json($validator->messages(), 400);
         }
 
-        // Passed validation, create the new note and return a 201
+        // Passed validation, select the note from the database
 
         $note = new NoteModel;
 
@@ -87,7 +110,7 @@ class NoteController extends Controller
         ];
 
         $response = [
-            'message' => $note->updateNote($request_data, $id, $request->user()->email)
+            'notes' => $note->updateNote($request_data, $id, $request->user()->email)
         ];
         
         return response($response, 200);

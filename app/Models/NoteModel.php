@@ -27,4 +27,16 @@ class NoteModel extends Model
 
         return $update ? 'Note was successfully updated' : 'There was no note with that ID for the associated user';
     }
+
+    public function getNote($user, $id = null) {
+        $notes = DB::table('notes')->where('email', '=', $user);
+        
+        if($id) {
+            $notes->where('id', '=', $id);
+        }
+
+        $notes = $notes->get();
+
+        return $notes;
+    }
 }
