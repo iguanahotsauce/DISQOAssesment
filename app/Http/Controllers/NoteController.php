@@ -39,7 +39,7 @@ class NoteController extends Controller
         ];
 
         $response = [
-            'message' => $note->create($request_data)
+            'message' => $note->createNote($request_data)
         ];
         
         return response($response, 201);
@@ -70,13 +70,23 @@ class NoteController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the note with the given title for the user associated with the token sent
      *
-     * @param  int  $id
+     * @param  string  $title 
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($title)
     {
-        //
+        if(!isset($title)) return response(['message' => 'Title is required'], 400);
+
+        $user = auth('sanctum')->user();
+
+        $note = new NoteModel;
+
+        $response = [
+            'message' => $note->removeNote($title, $user->email)
+        ];
+
+        return response($response, 200);
     }
 }

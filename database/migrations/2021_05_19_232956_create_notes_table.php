@@ -17,7 +17,8 @@ class CreateNotesTable extends Migration
             $table->string('email');
             $table->string('title')->max(50);
             $table->string('note')->max(1000)->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
             $table->foreign('email')->references('email')->on('users');
         });
