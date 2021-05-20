@@ -1,62 +1,257 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# API Documentation
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+**Login**
+----
+  Endpoint for receiving a new valid Bearer Token
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* **URL**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+  /login
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* **Method:**
+  
+  `POST`
+  
+* **Data Params**
 
-## Learning Laravel
+   **Required:**
+ 
+   `email=[email]`
+   `password=[string]`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **Success Response:**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+  * **Code:** 201 CREATED<br />
+    **Content:** `{
+    "user": {
+        "email": "alexbeebe@icloud.com",
+        "updated_at": "2021-05-20T04:56:23.000000Z",
+        "created_at": "2021-05-20T04:56:23.000000Z",
+        "id": 5
+    },
+    "token": "5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc"
+}`
+ 
+* **Error Response:**
 
-## Laravel Sponsors
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{
+    "message": "The given data was invalid.",
+    "errors": {
+        "email": [
+            "The email field is required."
+        ],
+        "password": [
+            "The password field is required."
+        ]
+    }
+}`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+* **Sample Call:**
 
-### Premium Partners
+  `curl -H "Accept: application/json" -X "POST" -d "email=alexbeebe@icloud.com&password=password" http://34.219.211.233/api/login`
+  
+  
+**Create Note**
+----
+  Endpoint for creating a new note for the user associated with the bearer token sent
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+* **URL**
 
-## Contributing
+  /api/notes
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* **Method:**
+  
+  `POST`
+  
+* **Data Params**
 
-## Code of Conduct
+   **Required:**
+ 
+   `title=[string|max:50]`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   **Optional:**
+ 
+   `note=[string|max:1000]`
 
-## Security Vulnerabilities
+* **Success Response:**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+  * **Code:** 201 CREATED<br />
+    **Content:** `{
+    "message": "New note successfully created"
+}`
+ 
+* **Error Response:**
 
-## License
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{
+    "errors": {
+        "title": [
+            "The title field is required."
+        ]
+    }
+}`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* **Sample Call:**
+
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 7|XST8R5NPNgfg0BsW7fxjhuuFcRHT8acBC9AtuSXM" -X "POST" -d "title=Test Note&note=Test Note Body" http://34.219.211.233/api/notes`
+  
+  
+**Read Note**
+----
+  Endpoint for getting one or all notes for the user associated with the bearer token sent
+
+* **URL**
+
+  /api/notes
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Optional:**
+ 
+   `id=[int]`
+
+* **Success Response:**
+
+  * **Code:** 200 OK<br />
+    **Content:** `{
+    "message": [
+        {
+            "id": 10,
+            "email": "alexbeebe@icloud.com",
+            "title": "Test Note",
+            "note": "Test Note Body",
+            "created_at": "2021-05-20 09:05:40",
+            "updated_at": "2021-05-20 09:05:40"
+        }
+    ]
+}`
+
+    OR
+
+    `{
+        "message": [
+            {
+                "id": 10,
+                "email": "alexbeebe@icloud.com",
+                "title": "Test Note",
+                "note": "Test Note Body",
+                "created_at": "2021-05-20 09:05:40",
+                "updated_at": "2021-05-20 09:05:40"
+            },
+            {
+                "id": 11,
+                "email": "alexbeebe@icloud.com",
+                "title": "Test Note2",
+                "note": "Test Note Body",
+                "created_at": "2021-05-20 09:13:20",
+                "updated_at": "2021-05-20 09:13:20"
+            }
+        ]
+    }`
+
+ 
+* **Error Response:**
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{
+    "message": "Unauthenticated."
+}`
+
+* **Sample Call:**
+
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 7|XST8R5NPNgfg0BsW7fxjhuuFcRHT8acBC9AtuSXM" -X "GET" http://34.219.211.233/api/notes/10`
+  
+  
+**Update Note**
+----
+
+  Endpoint for updating a note, the note will only be updated if the id passed is a note owned by the user for the associated bearer token
+
+* **URL**
+
+  /api/notes
+
+* **Method:**
+
+  `PUT`
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[int]`
+
+* **Data Params**
+
+  **Required:**
+ 
+   `title=[string|max:50]`
+   
+  **Optional:**
+ 
+   `note=[string|max:1000]`
+
+* **Success Response:**
+  
+  * **Code:** 200 OK<br />
+    **Content:** `{
+    "message": "Note was successfully updated"
+}`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `{
+    "errors": {
+        "title": [
+            "The title field is required."
+        ]
+    }
+}`
+
+* **Sample Call:**
+
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 7|XST8R5NPNgfg0BsW7fxjhuuFcRHT8acBC9AtuSXM" -X "PUT" -d "title=Update Note Name&note=Update Note Body" http://34.219.211.233/api/notes/10`
+  
+  
+**Delete Note**
+----
+  Endpoint for deleting a note, the note will only be deleted if the id passed is a note owned by the user for the associated bearer token
+
+* **URL**
+
+  /api/notes
+
+* **Method:**
+
+  `DELETE`
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `id=[int]`
+
+* **Success Response:**
+
+  * **Code:** 200 OK<br />
+    **Content:** `{
+    "message": "Note successfully deleted"
+}`
+ 
+* **Error Response:**
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{
+    "message": "Unauthenticated."
+}`
+
+* **Sample Call:**
+
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 7|XST8R5NPNgfg0BsW7fxjhuuFcRHT8acBC9AtuSXM" -X "DELETE" http://34.219.211.233/api/notes/10` 
