@@ -48,6 +48,13 @@
     }
 }`
 
+  OR
+  
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{
+    "message": "Invalid Credentials"
+}`
+
 * **Sample Call:**
 
   `curl -H "Accept: application/json" -X "POST" -d "email=alexbeebe@icloud.com&password=password" http://34.219.211.233/api/login`
@@ -79,7 +86,15 @@
 
   * **Code:** 201 CREATED<br />
     **Content:** `{
-    "message": "New note successfully created"
+    "message": "New note successfully created",
+    "note": {
+        "email": "alexbeebe@comcast.net",
+        "title": "Test4",
+        "note": "Test Note Body",
+        "updated_at": "2021-05-20T18:00:43.000000Z",
+        "created_at": "2021-05-20T18:00:43.000000Z",
+        "id": 14
+    }
 }`
  
 * **Error Response:**
@@ -92,10 +107,17 @@
         ]
     }
 }`
+    
+  OR
+  
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{
+    "message": "Unauthenticated."
+}`
 
 * **Sample Call:**
 
-  `curl -H "Accept: application/json" -H "Authorization: Bearer 7|XST8R5NPNgfg0BsW7fxjhuuFcRHT8acBC9AtuSXM" -X "POST" -d "title=Test Note&note=Test Note Body" http://34.219.211.233/api/notes`
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc" -X "POST" -d "title=Test Note&note=Test Note Body" http://34.219.211.233/api/notes`
   
   
 **Read Note**
@@ -165,7 +187,7 @@
 
 * **Sample Call:**
 
-  `curl -H "Accept: application/json" -H "Authorization: Bearer 7|XST8R5NPNgfg0BsW7fxjhuuFcRHT8acBC9AtuSXM" -X "GET" http://34.219.211.233/api/notes/10`
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc" -X "GET" http://34.219.211.233/api/notes/10`
   
   
 **Update Note**
@@ -215,9 +237,17 @@
     }
 }`
 
+    
+  OR
+  
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{
+    "message": "Unauthenticated."
+}`
+
 * **Sample Call:**
 
-  `curl -H "Accept: application/json" -H "Authorization: Bearer 7|XST8R5NPNgfg0BsW7fxjhuuFcRHT8acBC9AtuSXM" -X "PUT" -d "title=Update Note Name&note=Update Note Body" http://34.219.211.233/api/notes/10`
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc" -X "PUT" -d "title=Update Note Name&note=Update Note Body" http://34.219.211.233/api/notes/10`
   
   
 **Delete Note**
@@ -254,4 +284,4 @@
 
 * **Sample Call:**
 
-  `curl -H "Accept: application/json" -H "Authorization: Bearer 7|XST8R5NPNgfg0BsW7fxjhuuFcRHT8acBC9AtuSXM" -X "DELETE" http://34.219.211.233/api/notes/10` 
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc" -X "DELETE" http://34.219.211.233/api/notes/10` 
