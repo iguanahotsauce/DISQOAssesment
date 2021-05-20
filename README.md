@@ -18,19 +18,20 @@
    **Required:**
  
    `email=[email]`
-   `password=[string]`
+   `password=[string|urlencoded]`
 
 * **Success Response:**
 
   * **Code:** 201 CREATED<br />
     **Content:** `{
     "user": {
-        "email": "alexbeebe@icloud.com",
-        "updated_at": "2021-05-20T04:56:23.000000Z",
-        "created_at": "2021-05-20T04:56:23.000000Z",
-        "id": 5
+        "id": 1,
+        "email": "test-user@test.com",
+        "email_verified_at": null,
+        "created_at": "2021-05-20T21:25:42.000000Z",
+        "updated_at": "2021-05-20T21:25:42.000000Z"
     },
-    "token": "5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc"
+    "token": "2|j9ptwJu2XnYskjwecHSfWrbS95nCbH2zRcR6vGcT"
 }`
  
 * **Error Response:**
@@ -57,7 +58,7 @@
 
 * **Sample Call:**
 
-  `curl -H "Accept: application/json" -X "POST" -d "email=alexbeebe@icloud.com&password=password" http://34.219.211.233/api/login`
+  `curl -H "Accept: application/json" -X "POST" -d "email=test-user@test.com" -d "password=password" http://34.219.211.233/api/login`
   
   
 **Create Note**
@@ -76,11 +77,11 @@
 
    **Required:**
  
-   `title=[string|max:50]`
+   `title=[string|max:50|urlencoded]`
 
    **Optional:**
  
-   `note=[string|max:1000]`
+   `note=[string|max:1000|urlencoded]`
 
 * **Success Response:**
 
@@ -88,12 +89,12 @@
     **Content:** `{
     "message": "New note successfully created",
     "note": {
-        "email": "alexbeebe@comcast.net",
-        "title": "Test4",
+        "email": "test-user@test.com",
+        "title": "Test Note1",
         "note": "Test Note Body",
-        "updated_at": "2021-05-20T18:00:43.000000Z",
-        "created_at": "2021-05-20T18:00:43.000000Z",
-        "id": 14
+        "updated_at": "2021-05-20T21:27:15.000000Z",
+        "created_at": "2021-05-20T21:27:15.000000Z",
+        "id": 1
     }
 }`
  
@@ -117,7 +118,7 @@
 
 * **Sample Call:**
 
-  `curl -H "Accept: application/json" -H "Authorization: Bearer 5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc" -X "POST" -d "title=Test Note&note=Test Note Body" http://34.219.211.233/api/notes`
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 2|j9ptwJu2XnYskjwecHSfWrbS95nCbH2zRcR6vGcT" -X "POST" -d "title=Test+Note" -d "note=Test+Note+Body" http://34.219.211.233/api/notes`
   
   
 **Read Note**
@@ -142,14 +143,14 @@
 
   * **Code:** 200 OK<br />
     **Content:** `{
-    "message": [
+    "notes": [
         {
-            "id": 10,
-            "email": "alexbeebe@icloud.com",
-            "title": "Test Note",
+            "id": 1,
+            "email": "test-user@test.com",
+            "title": "Test Note1",
             "note": "Test Note Body",
-            "created_at": "2021-05-20 09:05:40",
-            "updated_at": "2021-05-20 09:05:40"
+            "created_at": "2021-05-20T21:27:15.000000Z",
+            "updated_at": "2021-05-20T21:27:15.000000Z"
         }
     ]
 }`
@@ -157,25 +158,25 @@
     OR
 
     `{
-        "message": [
-            {
-                "id": 10,
-                "email": "alexbeebe@icloud.com",
-                "title": "Test Note",
-                "note": "Test Note Body",
-                "created_at": "2021-05-20 09:05:40",
-                "updated_at": "2021-05-20 09:05:40"
-            },
-            {
-                "id": 11,
-                "email": "alexbeebe@icloud.com",
-                "title": "Test Note2",
-                "note": "Test Note Body",
-                "created_at": "2021-05-20 09:13:20",
-                "updated_at": "2021-05-20 09:13:20"
-            }
-        ]
-    }`
+    "notes": [
+        {
+            "id": 1,
+            "email": "test-user@test.com",
+            "title": "Test Note1",
+            "note": "Test Note Body",
+            "created_at": "2021-05-20T21:27:15.000000Z",
+            "updated_at": "2021-05-20T21:27:15.000000Z"
+        },
+        {
+            "id": 2,
+            "email": "test-user@test.com",
+            "title": "Test Note2",
+            "note": "Test Note Body",
+            "created_at": "2021-05-20T21:29:05.000000Z",
+            "updated_at": "2021-05-20T21:29:05.000000Z"
+        }
+    ]
+}`
 
  
 * **Error Response:**
@@ -187,7 +188,7 @@
 
 * **Sample Call:**
 
-  `curl -H "Accept: application/json" -H "Authorization: Bearer 5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc" -X "GET" http://34.219.211.233/api/notes/10`
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 2|j9ptwJu2XnYskjwecHSfWrbS95nCbH2zRcR6vGcT" -X "GET" http://34.219.211.233/api/notes/10`
   
   
 **Update Note**
@@ -213,11 +214,11 @@
 
   **Required:**
  
-   `title=[string|max:50]`
+   `title=[string|max:50|urlencoded]`
    
   **Optional:**
  
-   `note=[string|max:1000]`
+   `note=[string|max:1000|urlencoded]`
 
 * **Success Response:**
   
@@ -247,7 +248,7 @@
 
 * **Sample Call:**
 
-  `curl -H "Accept: application/json" -H "Authorization: Bearer 5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc" -X "PUT" -d "title=Update Note Name&note=Update Note Body" http://34.219.211.233/api/notes/10`
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 2|j9ptwJu2XnYskjwecHSfWrbS95nCbH2zRcR6vGcT" -X "PUT" -d "title=Updated+Note+Name" -d "note=Updated+Note+Body" http://34.219.211.233/api/notes/1`
   
   
 **Delete Note**
@@ -284,4 +285,4 @@
 
 * **Sample Call:**
 
-  `curl -H "Accept: application/json" -H "Authorization: Bearer 5|wCJjAQbhYGnABhPymX5iLJn8n4g7fK8UzPO1s3Lc" -X "DELETE" http://34.219.211.233/api/notes/10` 
+  `curl -H "Accept: application/json" -H "Authorization: Bearer 2|j9ptwJu2XnYskjwecHSfWrbS95nCbH2zRcR6vGcT" -X "DELETE" http://34.219.211.233/api/notes/1` 
